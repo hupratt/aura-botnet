@@ -72,3 +72,10 @@ on your devices.
 <h2>This repo is for testing/demonstration purposes only. This is not meant to
 be implemented in any real world applications except for testing on authorized
 machines.</h2>
+
+Build process:
+cmake . -B build/
+make
+
+Test command
+curl -v -XPOST -H "Content-type: application/json" -d '{"hash_sum":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"}' 'http://localhost:41450/convey/cmd/'

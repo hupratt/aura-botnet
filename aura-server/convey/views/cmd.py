@@ -12,6 +12,7 @@ import json
 
 def query_cmd(bot, query_set, hash_sum=None, group=None):
     cmd_list = None
+    # import pdb; pdb.set_trace()
     if hash_sum:
         cmd_list = query_set.filter(hash_assigned=hash_sum)
     elif group:
@@ -74,6 +75,7 @@ def command_to_json(command):
 
 @csrf_exempt
 def cmd(request):
+    
     # Alternate clients do not currently send version
     if 'version' in request.POST:
         version = request.POST['version']
@@ -81,7 +83,12 @@ def cmd(request):
         version = None
 
     hash_sum = request.POST['hash_sum']
+    
 
+    # print(bot)
+    # print(request)
+    print(hash_sum)
+    
     bot = get_object_or_404(Bot, hash_sum=hash_sum)
     bot.version = version
     bot.ip_addr = get_ip(request)
@@ -90,19 +97,19 @@ def cmd(request):
 
     # Only use commands that are queued to run at this time
     now = timezone.now()
-    active_cmds = Command.objects.filter(
-        start_time__lte=now,
-        end_time__gte=now
-    ).order_by('start_time')
+    active_cmds = Command.objects.filter( start_time__lte=now,end_time__gte=now).order_by('start_time')
+    # import pdb; pdb.set_trace()
 
     if not active_cmds:
         raise Http404
 
     # If command selected then continue, else return 404
     command = get_current_cmd(bot, active_cmds)
+    
     if command:
         # Then check if bot already ran command
         # If not, then add command to bot's list of completed commands
+        
         Bot_Command.objects.get_or_create(
             bot=bot,
             cmd=command,
