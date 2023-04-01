@@ -8,9 +8,6 @@ class FileInline(admin.StackedInline):
     extra = 1
 
 
-class BotCommand(admin.ModelAdmin):
-    inlines = ["Bot_Command"]
-
 
 class CommandAdmin(admin.ModelAdmin):
     inlines = [

