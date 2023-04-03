@@ -14,6 +14,8 @@
 #include "sysinfo.hh"
 #include "util.hh"
 
+#include <cpr/cpr.h>
+
 namespace fs = std::experimental::filesystem;
 using json = nlohmann::json;
 
@@ -142,5 +144,11 @@ std::string Command::Execute() {
     fs::current_path("../");
     int status = std::system((cmd + "> log.txt").c_str());
 
+    cpr::Response response = cpr::Post(cpr::Url{"http://localhost:41450/convey/cmd/media"});
+    std::cout << response.text << std::endl;
+
+    // std::ostringstream os;
+    // os << curlpp::options::Url(std::string("http://example.com"));
+    // curlpp::options::Url(std::string("http://example.com"));
     return output;
 }
