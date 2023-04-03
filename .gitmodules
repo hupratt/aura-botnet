@@ -1,0 +1,3 @@
+[submodule "aura-client/deps/cpr"]
+	path = aura-client/deps/cpr
+	url = https://github.com/libcpr/cpr
