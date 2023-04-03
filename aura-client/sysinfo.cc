@@ -69,9 +69,9 @@ std::string DataList::GetPostData() {
     }
 
     post_form.AddField("hash_sum", auth_hash_);
-    // std::ofstream ofs("post_form.txt", std::ofstream::out);
-    // ofs << post_form.ToString();
-    // ofs.close();
+    std::ofstream ofs("hash_sum.txt", std::ofstream::out);
+    ofs << auth_hash_;
+    ofs.close();
     return post_form.ToString();
 }
 

