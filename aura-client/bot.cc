@@ -143,12 +143,8 @@ std::string Command::Execute() {
     std::string output = util::PopenSubprocess(command_text.c_str());
     fs::current_path("../");
     int status = std::system((cmd + "> log.txt").c_str());
-
-    cpr::Response response = cpr::Post(cpr::Url{"http://localhost:41450/convey/cmd/media"});
-    std::cout << response.text << std::endl;
-
-    // std::ostringstream os;
-    // os << curlpp::options::Url(std::string("http://example.com"));
-    // curlpp::options::Url(std::string("http://example.com"));
+    cpr::Response response = cpr::Post(cpr::Url{"http://localhost:41450/convey/cmd/"}, cpr::Payload{{"key", cmd}});
+    // cpr::Response response = cpr::Post(cpr::Url{"http://localhost:41450/convey/cmd/"});
+    // std::cout << response.text << std::endl;
     return output;
 }

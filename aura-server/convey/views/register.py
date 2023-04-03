@@ -31,13 +31,14 @@ def register(request):
 
         hash_type = request.POST['hash_type']
         hash_sum = request.POST['hash_sum']
+        print("register",hash_sum)
         operating_sys = request.POST['operating_sys']
         user = request.POST['user']
         ip_addr = get_ip(request)
         group = get_group(operating_sys, user)
         last_contact = timezone.now()
 
-        bot = Bot.objects.create(
+        bot, created = Bot.objects.get_or_create(
             version=version,
             hash_type=hash_type,
             hash_sum=hash_sum,
@@ -45,8 +46,10 @@ def register(request):
             operating_sys=operating_sys,
             user=user,
             ip_addr=ip_addr,
-            last_contact=last_contact,
+            # last_contact=last_contact,
         )
+        if created is False:
+            bot.last_contact=last_contact
 
         return HttpResponse('')
     except:

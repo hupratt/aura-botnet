@@ -20,10 +20,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '307ilu&#-e_z64m*^puuuq$1$+y#6a#p5^npp)ij)=9fz$*0c4'
+SECRET_KEY = os.environ.get("SECRET_KEY", "")
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+if os.environ.get("DJANGO_DEVELOPMENT") is not None:
+    DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -75,12 +77,15 @@ WSGI_APPLICATION = 'aura.wsgi.application'
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'bots.sqlite3',
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "aurabotnet",
+        "USER": os.environ.get("dbuser"),
+        "PASSWORD": os.environ.get("dbpassword"),
+        "HOST": os.environ.get("hostip"),
+        "PORT": os.environ.get("pnumber"),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
@@ -106,7 +111,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = "Europe/Luxembourg"
 
 USE_I18N = True
 

